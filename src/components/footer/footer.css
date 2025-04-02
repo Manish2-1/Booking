@@ -1,0 +1,40 @@
+.footer {
+  width: 100%;
+  max-width: 1200px;
+  font-size: 14px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  padding: 0 30px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.fLists {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 50px;
+  padding: 0;
+}
+
+.fList {
+  list-style: none;
+  padding: 0;
+}
+
+.fListItem {
+  margin-bottom: 12px;
+  color: #003580;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.fListItem:hover {
+  color: #0071c2;
+  transform: translateX(3px);
+}
+
+.fList:not(:last-child) {
+  border-right: 1px solid #e0e0e0;
+  padding-right: 20px;
+}

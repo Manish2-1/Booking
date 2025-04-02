@@ -1,0 +1,150 @@
+.searchItem {
+  border: 1px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 25px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchItem:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.siImg {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.siDesc {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 2;
+  font-family: "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+    sans-serif;
+}
+
+.siTitle {
+  font-size: 22px;
+  color: #0071c2;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: -0.2px;
+}
+
+.siDistance {
+  font-size: 13px;
+  color: #555;
+}
+
+.siTaxiOp {
+  font-size: 13px;
+  background-color: #008009;
+  color: white;
+  width: max-content;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.siSubtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.siFeatures {
+  font-size: 13px;
+  color: #444;
+  line-height: 1.4;
+}
+
+.siCancelOp {
+  font-size: 13px;
+  color: #008009;
+  font-weight: 600;
+}
+
+.siCancelOpSubtitle {
+  font-size: 13px;
+  color: #008009;
+  font-weight: 500;
+}
+
+.siDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.siRating {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.siRating > span {
+  font-weight: 600;
+  color: #333;
+}
+
+.siRating > button {
+  background-color: #003580;
+  color: white;
+  padding: 6px 8px;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.siRating > button:hover {
+  background-color: #004a9e;
+}
+
+.siDetailTexts {
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.siPrice {
+  font-size: 26px;
+  font-weight: 700;
+  color: #222;
+}
+
+.siTaxOp {
+  font-size: 13px;
+  color: #666;
+}
+
+.siCheckButton {
+  background-color: #0071c2;
+  color: white;
+  font-weight: 600;
+  padding: 12px 8px;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: background-color 0.2s;
+}
+
+.siCheckButton:hover {
+  background-color: #0084e4;
+}
