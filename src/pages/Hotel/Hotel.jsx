@@ -1,6 +1,6 @@
 import "./hotel.css";
 import Navbar from "../../components/Navbar/Navbar";
-import { Header } from "../../components/Header/Header";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faCircleArrowLeft,
@@ -10,30 +10,35 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import MailList from "../../components/mailList/MailList";
 import Footer from "../../components/footer/Footer";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import useFetch from "../../hooks/useFetch";
+import { Navigate, useLocation, useNavigate } from "react-router";
+import { SearchContext } from "../../context/SearchContext";
+import { Header } from "../../components/header/Header";
+import { AuthContext } from "../../context/AuthContext";
+import Reserve from "../../components/reserve/Reserve";
 const Hotel = () => {
+  const location = useLocation();
+  const id = location.pathname.split("/")[2];
+
   const [slideNumber, setSlideNumber] = useState(0);
   const [open, setOpen] = useState(false);
-  const photos = [
-    {
-      src: "/src/assets/images/H1.jpg",
-    },
-    {
-      src: "/src/assets/images/H2.jpg",
-    },
-    {
-      src: "/src/assets/images/H3.jpg",
-    },
-    {
-      src: "/src/assets/images/H4.jpg",
-    },
-    {
-      src: "/src/assets/images/H5.jpg",
-    },
-    {
-      src: "/src/assets/images/H6.jpg",
-    },
-  ];
+  const [openModal, setOpenModal] = useState(false);
+
+  const { data, loading, error } = useFetch(`/api/hotels/find/${id}`);
+  const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const { dates, options } = useContext(SearchContext);
+
+  const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
+  function dayDifference(date1, date2) {
+    const timeDiff = Math.abs(date2.getTime() - date1.getTime());
+    const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
+    return diffDays;
+  }
+
+  const days = dayDifference(dates[0].endDate, dates[0].startDate);
 
   const handleOpen = (i) => {
     setSlideNumber(i);
@@ -50,97 +55,98 @@ const Hotel = () => {
 
     setSlideNumber(newSlideNumber);
   };
+
+  const handleClick = () => {
+    if (user) {
+      setOpenModal(true);
+    } else {
+      navigate("/login");
+    }
+  };
+
   return (
     <div className={open ? "slider-open" : ""}>
       <Navbar />
       <Header type="list" />
-      <div className="hotelContainer">
-        {open && (
-          <div className="slider">
-            <FontAwesomeIcon
-              icon={faCircleXmark}
-              className="close"
-              onClick={() => setOpen(false)}
-            />
-            <FontAwesomeIcon
-              icon={faCircleArrowLeft}
-              className="arrow"
-              onClick={() => handleMove("l")}
-            />
-            <div className="sliderWrapper">
-              <img src={photos[slideNumber].src} alt="" className="sliderImg" />
-            </div>
-            <FontAwesomeIcon
-              icon={faCircleArrowRight}
-              className="arrow"
-              onClick={() => handleMove("r")}
-            />
-          </div>
-        )}
-        <div className="hotelWrapper">
-          <button className="bookNow">Reserve or Book Now!</button>
-          <h1 className="hotelTitle">Pokhara Grande</h1>
-          <div className="hotelAddress">
-            <FontAwesomeIcon icon={faLocationDot} />
-            <span>Birauta Chowk, Pardi Pokhara, 33411 Pokhara, Nepal</span>
-          </div>
-          <span className="hotelDistance">
-            Great Location - 300m from city center
-          </span>
-          <span className="hotelPriceHighLight">
-            Book a stay over NPR 12,619 at this property and get a free airport
-            pickup
-          </span>
-          <div className="hotelImages">
-            {photos.map((photo, i) => (
-              <div className="hotelImgWrapper">
+      {loading ? (
+        "Loading.."
+      ) : (
+        <div className="hotelContainer">
+          {open && (
+            <div className="slider">
+              <FontAwesomeIcon
+                icon={faCircleXmark}
+                className="close"
+                onClick={() => setOpen(false)}
+              />
+              <FontAwesomeIcon
+                icon={faCircleArrowLeft}
+                className="arrow"
+                onClick={() => handleMove("l")}
+              />
+              <div className="sliderWrapper">
                 <img
-                  onClick={() => handleOpen(i)}
-                  src={photo.src}
+                  src={data.photos[slideNumber]}
                   alt=""
-                  className="hotelImg"
+                  className="sliderImg"
                 />
               </div>
-            ))}
-          </div>
-          <div className="hotelDetails">
-            <div className="hotelDetailsText">
-              <h1 className="hotelTitle">
-                Get the celebrity treatment with world-class service at Hotel
-                Pokhara Grande
-              </h1>
-              <p className="hotelDesc">
-                Hotel Pokhara Grande offers rooms and suites with free Wi-Fi and
-                cable TV. Just 8 km from Pokhara Airport, it has 3 dining
-                options and an outdoor pool. Lake side is 1.5 km from Hotel
-                Pokhara Grande and the property offers free shuttle service to
-                and from the hotel. Complimentary airport shuttle service can
-                also be arranged with prior notice. The air conditioned rooms
-                feature full length windows and wood flooring and furnishings.
-                An electric kettle and minibar are included. Certain rooms offer
-                mountain views. A variety of massages and body treatments are
-                offered at the hotel's spa. Other hotel facilities include a
-                fitness centre and business centre. Tibetan food is served at
-                Thasang Restaurant, which is opened for lunch and dinner. Guests
-                can head to Bagaicha at the poolside for light snacks and
-                drinks.
-              </p>
+              <FontAwesomeIcon
+                icon={faCircleArrowRight}
+                className="arrow"
+                onClick={() => handleMove("r")}
+              />
             </div>
-            <div className="hotelDetailsPrice">
-              <h1>Perfect for a 1-night stay!</h1>
-              <span>Top location: Highly rated by recent guests(8.7)</span>
-              <h2>
-                <b>NPR 12,619</b>(1 night)
-              </h2>
-              <button>Reserve or Book Now!</button>
+          )}
+          <div className="hotelWrapper">
+            <button className="bookNow">Reserve or Book Now!</button>
+            <h1 className="hotelTitle">{data.name}</h1>
+            <div className="hotelAddress">
+              <FontAwesomeIcon icon={faLocationDot} />
+              <span>{data.address}</span>
+            </div>
+            <span className="hotelDistance">
+              Great Location - {data.distance}m from city center
+            </span>
+            <span className="hotelPriceHighLight">
+              Book a stay over NPR {data.cheapestPrice} at this property and get
+              a free airport pickup
+            </span>
+            <div className="hotelImages">
+              {data.photos?.map((photo, i) => (
+                <div className="hotelImgWrapper">
+                  <img
+                    onClick={() => handleOpen(i)}
+                    src={photo}
+                    alt=""
+                    className="hotelImg"
+                  />
+                </div>
+              ))}
+            </div>
+            <div className="hotelDetails">
+              <div className="hotelDetailsText">
+                <h1 className="hotelTitle">{data.title}</h1>
+                <p className="hotelDesc">{data.desc}</p>
+              </div>
+              <div className="hotelDetailsPrice">
+                <h1>Perfect for a {days}-night stay!</h1>
+                <span>Top location: Highly rated by recent guests(8.7)</span>
+                <h2>
+                  <b>NPR {days * data.cheapestPrice * options.room}</b>({days}{" "}
+                  night)
+                </h2>
+                <button onClick={handleClick}>Reserve or Book Now!</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
       <div style={{ marginBottom: "20px" }}>
         <MailList />
       </div>
       <Footer />
+      {openModal && <Reserve setOpen={setOpenModal} hotelId={id} />}
     </div>
   );
 };

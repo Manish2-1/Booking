@@ -1,43 +1,37 @@
+import useFetch from "../../hooks/useFetch";
 import "./propertyList.css";
 
 const PropertyList = () => {
+  const { data, loading, error } = useFetch("/api/hotels/countByType");
+
+  const images = [
+    "/src/assets/images/BC1.jpg",
+    "/src/assets/images/BC2.jpg",
+    "/src/assets/images/BC3.jpg",
+    "/src/assets/images/BC4.jpg",
+    "/src/assets/images/BC5.webp",
+  ];
+
   return (
     <div className="pList">
-      <div className="pListItem">
-        <img src="/src/assets/images/BC1.jpg" className="pListImg" />
-        <div className="pListTitles">
-          <h1>Cabins</h1>
-          <h2>400 cabins</h2>
-        </div>
-      </div>
-      <div className="pListItem">
-        <img src="/src/assets/images/BC2.jpg" className="pListImg" />
-        <div className="pListTitles">
-          <h1>Villas</h1>
-          <h2>250 villas</h2>
-        </div>
-      </div>
-      <div className="pListItem">
-        <img src="/src/assets/images/BC3.jpg" className="pListImg" />
-        <div className="pListTitles">
-          <h1>Resorts</h1>
-          <h2>1700 resorts</h2>
-        </div>
-      </div>
-      <div className="pListItem">
-        <img src="/src/assets/images/BC4.jpg" className="pListImg" />
-        <div className="pListTitles">
-          <h1>Apartments</h1>
-          <h2>1200 apartments</h2>
-        </div>
-      </div>
-      <div className="pListItem">
-        <img src="/src/assets/images/BC5.webp" className="pListImg" />
-        <div className="pListTitles">
-          <h1>Hotels</h1>
-          <h2>2000 hotels</h2>
-        </div>
-      </div>
+      {loading ? (
+        "Loading please wait"
+      ) : (
+        <>
+          {data &&
+            images.map((img, i) => (
+              <div className="pListItem" key={i}>
+                <img src={img} className="pListImg" />
+                <div className="pListTitles">
+                  <h1>{data[i]?.type}</h1>
+                  <h2>
+                    {data[i]?.count} {data[i]?.type}
+                  </h2>
+                </div>
+              </div>
+            ))}
+        </>
+      )}
     </div>
   );
 };
