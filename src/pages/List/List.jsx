@@ -34,7 +34,12 @@ const List = () => {
             <h1 className="lsTitle">Search</h1>
             <div className="lsItem">
               <label>Destination</label>
-              <input placeholder={destination} type="text" />
+              <input
+                type="text"
+                value={destination}
+                onChange={(e) => setDestination(e.target.value)}
+                className="lsTextInput"
+              />
             </div>
             <div className="lsItem">
               <label>Check-in Date</label>
@@ -78,8 +83,13 @@ const List = () => {
                   <input
                     type="number"
                     min={1}
-                    className="lsOptionInput"
-                    placeholder={options.adult}
+                    value={options.adult}
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        adult: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
                 <div className="lsOptionItem">
@@ -87,8 +97,13 @@ const List = () => {
                   <input
                     type="number"
                     min={0}
-                    className="lsOptionInput"
-                    placeholder={options.children}
+                    value={options.children}
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        children: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
                 <div className="lsOptionItem">
@@ -96,8 +111,13 @@ const List = () => {
                   <input
                     type="number"
                     min={1}
-                    className="lsOptionInput"
-                    placeholder={options.room}
+                    value={options.room}
+                    onChange={(e) =>
+                      setOptions((prev) => ({
+                        ...prev,
+                        room: Number(e.target.value),
+                      }))
+                    }
                   />
                 </div>
               </div>
